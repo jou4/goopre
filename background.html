@@ -22,12 +22,12 @@ function getRemainSlide(data, callback){
     if( ! data[0].defChildIds){
         callback && callback(data);
     }
-    
+
     var id = data[0].attributes.revision.split(":")[0];
     var rev = data[0].attributes.revision;
     var postToken = data[9];
     var defChildIds = data[0].defChildIds;
-    
+
     var url = "https://docs.google.com/present/components";
     var req = {
         action: "fetchcomponents",
@@ -38,7 +38,7 @@ function getRemainSlide(data, callback){
         POST_TOKEN: postToken,
         finis: "true"
     };
-    
+
     $.ajax({
         url: url,
         type: "POST",
@@ -51,13 +51,13 @@ function getRemainSlide(data, callback){
         success: function(res){
             res = res.replace(/^while\(true\);/, "");
             res = jQuery.evalJSON(res);
-            
+
             for(var id in res){
                 if(id != "protocol"){
                     data[0].children[id] = res[id];
                 }
             }
-            
+
             callback && callback(data);
         }
     });
@@ -68,9 +68,11 @@ function createStoreData(data, callback){
     blobDownload(blobs, function(res){
         data.attributes.blobs = res;
         addSlide(data);
-        
-        alert("「" + data.attributes.title + "」のコピーを作成しました。");
-        
+
+        webkitNotifications.createNotification(
+            chrome.extension.getURL("icon.png"), "完了",
+            "「" + data.attributes.title + "」のコピーを作成しました。").show();
+
         callback && callback();
     });
 }
@@ -135,7 +137,7 @@ function blobDownload(blobs, callback){
     }
     var i = 0, len = keys.length;
     var result = {};
-    
+
     function iter(){
         if(i < len){
             var key = keys[i++];
@@ -147,12 +149,12 @@ function blobDownload(blobs, callback){
             callback && callback(result);
         }
     }
-    
+
     iter();
 }
 
 
-var callbacks = []; 
+var callbacks = [];
 
 function getPresenData(currentTab, callback) {
     if (currentTab.url.indexOf("http") < 0){
@@ -161,7 +163,7 @@ function getPresenData(currentTab, callback) {
         callbacks.push(callback);
         chrome.tabs.executeScript(null, { file: "content_script.js" });
     }
-}; 
+};
 
 chrome.extension.onRequest.addListener(function(request){
     var callback = callbacks.shift();
