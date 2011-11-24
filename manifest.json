@@ -1,0 +1,21 @@
+{
+    "name": "GooPre",
+    "version": "1.0.0",
+    "description": "Save presentation of google doc to local storage. It can be used at offline.",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "popup": "popup.html"
+    },
+    "background_page": "background.html",
+    "permissions": [
+        "tabs",
+        "unlimitedStorage",
+        "https://docs.google.com/*",
+        "https://blob-s-docs.googlegroups.com/*"
+    ],
+    "icons": {
+        "16" : "icon.png",
+        "48" : "icon.png",
+        "128": "icon.png"
+    }
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="jquery.json.js"></script>
+    <script type="text/javascript" src="model.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+function saveSlide(tab, callback){
+    getPresenData(tab, function(data){
+        getRemainSlide(data, function(data){
+            createStoreData(data[0], callback);
+        });
+    });
+}
+
+function getRemainSlide(data, callback){
+    if( ! data[0].defChildIds){
+        callback && callback(data);
+    }
+    
+    var id = data[0].attributes.revision.split(":")[0];
+    var rev = data[0].attributes.revision;
+    var postToken = data[9];
+    var defChildIds = data[0].defChildIds;
+    
+    var url = "https://docs.google.com/present/components";
+    var req = {
+        action: "fetchcomponents",
+        fetchBy: "slide_id",
+        id: id,
+        revision: rev,
+        components: "[" + defChildIds.map(function(id){ return '"' + id + '"'; }).join(",") + "]",
+        POST_TOKEN: postToken,
+        finis: "true"
+    };
+    
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: req,
+        dataType: "text",
+        error: function(err, err_code){
+            console.log(err);
+            console.log(err_code);
+        },
+        success: function(res){
+            res = res.replace(/^while\(true\);/, "");
+            res = jQuery.evalJSON(res);
+            
+            for(var id in res){
+                if(id != "protocol"){
+                    data[0].children[id] = res[id];
+                }
+            }
+            
+            callback && callback(data);
+        }
+    });
+}
+
+function createStoreData(data, callback){
+    var blobs = data.attributes.blobs;
+    blobDownload(blobs, function(res){
+        data.attributes.blobs = res;
+        addSlide(data);
+        
+        alert("「" + data.attributes.title + "」のコピーを作成しました。");
+        
+        callback && callback();
+    });
+}
+
+function loadBinary(url){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url ,false);
+    xhr.overrideMimeType("text/plain; charset=x-user-defined");
+    xhr.send(null);
+    if(xhr.status != 200){
+        return "";
+    }
+    return xhr.responseText;
+}
+
+function dumpBlob(b){
+    var i = 0, len = b.length;
+    var col = 0;
+    var line = "";
+    while(i < len){
+        line += (b.charCodeAt(i++) & 0xff).toString(16) + "\t";
+        col++;
+        if(col >= 16){
+            console.log(line);
+        }
+    }
+    console.log(line);
+}
+
+function base64Enc(input){
+    var keyString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	var output = "";
+	var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+	var i = 0;
+	while (i < input.length) {
+		chr1 = input.charCodeAt(i++) & 0xff;
+		chr2 = input.charCodeAt(i++) & 0xff;
+		chr3 = input.charCodeAt(i++) & 0xff;
+		enc1 = chr1 >> 2;
+		enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+		enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+		enc4 = chr3 & 63;
+		if (isNaN(chr2)) {
+			enc3 = enc4 = 64;
+		} else if (isNaN(chr3)) {
+			enc4 = 64;
+		}
+		output = output + keyString.charAt(enc1) + keyString.charAt(enc2) + keyString.charAt(enc3) + keyString.charAt(enc4);
+	}
+	return output;
+}
+
+function makeDataScheme(input){
+    input = base64Enc(input);
+    return "data:image/gif;base64," + input;
+}
+
+function blobDownload(blobs, callback){
+    var keys = [];
+    for(var key in blobs){
+        keys.push(key);
+    }
+    var i = 0, len = keys.length;
+    var result = {};
+    
+    function iter(){
+        if(i < len){
+            var key = keys[i++];
+            var res = loadBinary(blobs[key])
+            result[key] = makeDataScheme(res);
+            iter();
+        }
+        else{
+            callback && callback(result);
+        }
+    }
+    
+    iter();
+}
+
+
+var callbacks = []; 
+
+function getPresenData(currentTab, callback) {
+    if (currentTab.url.indexOf("http") < 0){
+        callback(null);
+    }else{
+        callbacks.push(callback);
+        chrome.tabs.executeScript(null, { file: "content_script.js" });
+    }
+}; 
+
+chrome.extension.onRequest.addListener(function(request){
+    var callback = callbacks.shift();
+    callback(request);
+});
+
+
+</script>
+</body>
+</html>

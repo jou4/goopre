@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="present.css">
+    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="jquery.json.js"></script>
+    <script type="text/javascript" src="model.js"></script>
+    <script type="text/javascript" src="present.js"></script>
+    <title>Presetation</title>
+</head>
+<body class="team-slideshow">
+    <div id="main" class="slideshow-main">
+        
+        <div id="primaryView" class="slideshow-view-background">
+            <div id="primaryViewSlide" class="slideshow-view">
+                <div id="slideBg" class="slide goog-presently-background"></div>
+                <div id="slideFg" class="goog-presently-theme-blank"></div>
+            </div>
+        </div>
+        
+        <div id="Toolbar" class="toolbar-container slideshow-nav">
+            <table width="88" id="slideshow_toolbar_controls" class="toolbar-controls" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="toolbar-cell">
+                        <div id="toolbar_controls" style="position: relative; height: 100%;">
+                            <div id="slide_nav_bg" class="toolbar-bg slideshow-nav-bg"></div>
+                            <div id="slide_nav_fg" class="toolbar-fg">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="left">
+                                            <table width="100%" cellspacing="0">
+                                                <tr>
+                                                    <td class="toolbar-cell" style="width: 35px; padding-right: 6px;">
+                                                        <table id="ToolbarPrevContainer" class="toolbar-button" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td>
+                                                                    <img id="ToolbarPrev" class="toolbar-button-active"
+                                                                        src="images/canuse-left.gif" alt="前のスライド" />
+                                                                    <img id="ToolbarPrevDisabled" class="toolbar-button-inactive"
+                                                                        src="images/nouse-left.gif" alt="前のスライド" style="display: none;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td class="toolbar-cell" style="width: 35px; padding-left: 6px;">
+                                                        <table id="ToolbarNextContainer" class="toolbar-button" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td>
+                                                                    <img id="ToolbarNext" class="toolbar-button-active"
+                                                                        src="images/canuse-right.gif" alt="次のスライド" />
+                                                                    <img id="ToolbarNextDisabled" class="toolbar-button-inactive"
+                                                                        src="images/nouse-right.gif" alt="次のスライド" style="display: none;" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <table class="footer footer_container" cellpadding="0" cellspacing="0">
+        <tr>
+            <td id="footer_logo_cell">
+                <img id="footer_logo" src="images/present_google_logo.gif" />
+            </td>
+            <td class="footer_label">ドキュメント</td>
+            <td id="footer_slidemenu_cell">
+                <div id="footerSlideMenuContainer" class="footer-menu-btn-container">
+                    <input type="button" class="footer-menu-btn" value="スライド 1 / 3" />
+                </div>
+            </td>
+            <td id="footer_link_cell"></td>
+        </tr>
+    </table>
+    
+</body>
+</html>

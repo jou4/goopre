@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="jquery.json.js"></script>
+    <script type="text/javascript" src="model.js"></script>
+    
+    <style>
+        body {
+            min-width: 350px;
+            font-size: 90%;
+        }
+        
+        a {
+            color: #DD4B39;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        #btnsBlock {
+            text-align: right;
+        }
+        
+        #listBlock {
+            margin-top: 10px;
+        }
+        
+        #noteBlock {
+            font-size: 80%;
+        }
+        
+        #noteBlock p{
+            margin: 10px 0;
+            padding: 0;
+        }
+        
+        #noteBlock .link{
+            text-align: right;
+        }
+        
+        table {
+            border-collapse: collapse;
+            border: 0;
+        }
+        
+        td {
+            border-bottom: 1px dotted #CCC;
+            padding: 5px 10px;
+            vertical-align: bottom;
+        }
+        
+        tr:hover td {
+            background-color: #E0EDFE;
+        }
+        
+        td.title {
+            width: 100%;
+            font-weight: bold;
+        }
+        
+        td.date {
+            white-space: nowrap;
+            font-size: 75%;
+            color: #666;
+        }
+        
+        td.btn {
+            white-space: nowrap;
+            font-size: 75%;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div id="btnsBlock">
+    <input id="saveButton" type="button" value="このスライドショーをコピー" />
+</div>
+
+<div id="listBlock">
+    <table id="list">
+        <tbody></tbody>
+    </table>
+<div>
+
+<div id="noteBlock">
+<p>Googleドキュメントのプレゼンテーションページで「このスライドショーをコピー」をクリックすると、スライドショーのコピーがローカルに保存され、オフラインでも使用できるようになります。</p>
+<p class="link"><a id="toDocHome" href="https://docs.google.com">Googleドキュメント</a></p>
+</div>
+
+
+<script type="text/javascript">
+
+var bg = chrome.extension.getBackgroundPage();
+
+$(function(){
+    chrome.tabs.getSelected(null, function(tab){
+        if(tab.url.indexOf("https://docs.google.com/present/view?id=") < 0){
+            $("#saveButton").prop("disabled", true);
+        }
+        else{
+            $("#saveButton").prop("disabled", false);
+        }
+    });
+    
+    $("#saveButton").click(function(){
+        chrome.tabs.getSelected(null, function(tab){
+            bg.saveSlide(tab, showList);
+        });
+    });
+    
+    $("#toDocHome").click(function(){
+        var url = $("#toDocHome").attr("href");
+        chrome.tabs.getAllInWindow(null,function(tabs){
+            for(var i=0,j=tabs.length;i<j;i++){
+                if(tabs[i].url.indexOf(url) >= 0){
+                    chrome.tabs.update(tabs[i].id, { selected:true });
+                    return;
+                }
+            }
+            chrome.tabs.create({ url: url });
+        });
+    });
+    
+    showList();
+});
+
+function dateYMD(date, sep){
+    var dt = new Date(date);
+    sep = sep || "";
+    
+    var y = dt.getYear();
+    var m = dt.getMonth() + 1;
+    var d = dt.getDay();
+    
+    if(y < 1900){
+        y += 1900;
+    }
+    
+    if(m < 10){
+        m = "0" + m;
+    }
+    
+    if(d < 10){
+        d = "0" + d;
+    }
+    
+    return y + sep + m + sep + d;
+}
+
+function showList(){
+    var list = $("#list tbody").empty();
+    
+    var index = getIndexData();
+    
+    if(index.length > 0){
+        $("#noteBlock").hide();
+        
+        index
+        .sort(function(a,b){
+            var t1 = (new Date(a.date)).getTime();
+            var t2 = (new Date(b.date)).getTime();
+            
+            if(t1 > t2){
+                return -1;
+            }
+            else if(t1 < t2){
+                return 1;
+            }
+            return 0;
+        })
+        .forEach(function(data){
+            var row = $("<tr></tr>").appendTo(list);
+            
+            var showBtn = $("<a href='javascript:void(0);'></a>").text(data.title);
+            showBtn.click(function(){
+                chrome.tabs.create({
+                    url: "presentation.html?id=" + data.id
+                }, function(tab){
+                    
+                });
+            });
+            $("<td class='title'></td>").append(showBtn).appendTo(row);
+            
+            $("<td class='date'></td>").text(dateYMD(data.date, "/")).appendTo(row);
+            
+            var removeBtn = $("<a href='javascript:void(0);'>削除</a>");
+            removeBtn.click(function(){
+                removeSlide(data.id);
+                row.remove();
+                row = null;
+            });
+            
+            $("<td class='btn'></td>").append(removeBtn).appendTo(row);
+        });
+    }
+    else{
+        $("#noteBlock").show();
+    }
+}
+
+</script>
+</body>
+</html>

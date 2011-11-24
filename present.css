@@ -1,0 +1,382 @@
+#main{
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+}
+
+html{
+    height: 100%;
+}
+
+.team-slideshow{
+    font: 12px Arial,Verdana,Helvetica,sans-serif;
+    height: 100%;
+    background-color: black;
+}
+
+.slideshow-main{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    outline: none;
+    outline-width: 0;
+}
+
+.slideshow-view-background{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.slideshow-view{
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+    border: 0;
+    padding: 0;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.slide{
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+.slide .placeholder{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+.slide .text{
+    padding: 0.1125em;
+}
+
+.slide .picture{
+    display: block;
+}
+
+.slide .picture img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.goog-presently-background{
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+.goog-presently-theme-blank{
+    font-family: Arial,Verdana,sans-serif;
+    color: black;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+
+.slideshow-nav{
+    z-index: 5000;
+    bottom: 10px;
+    left: 0;
+    position: absolute;
+    padding-left: 10px;
+}
+
+.toolbar-container{
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+.toolbar-controls{
+    border: 0;
+    border-collapse: collapse;
+}
+
+.toolbar-cell{
+    padding: 0;
+    color: #999;
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.slideshow-nav-bg{
+    background: url('images/bg-full.gif') no-repeat;
+}
+
+.slideshow-nav-fg{
+}
+
+.toolbar-bg{
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+}
+
+.toolbar-fg{
+    z-index: 3;
+    position: relative;
+    zoom: 1;
+    padding: 0;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.toolbar-fg td{
+    white-space: nowrap;
+}
+
+
+.toolbar-button-active{
+    cursor: pointer;
+    opacity: 0.23;
+}
+
+.toolbar-button-inactive{
+    opacity: 0.15;
+}
+
+.toolbar-button{
+    padding: 7px 5px;
+}
+
+.toolbar-container img{
+    display: block;
+}
+
+.toolbar-container:hover{
+    color:#333
+}
+
+.toolbar-container:hover .toolbar-bg{
+    opacity: 0.5;
+}
+
+.toolbar-container:hover .toolbar-button-active{
+    cursor: pointer;
+    opacity: 0.50;
+}
+
+.toolbar-container:hover .toolbar-button-active:hover{
+    cursor:pointer;
+    opacity:0.80;
+}
+
+.footer{
+    color: #A5A5A5;
+    font-weight: normal;
+    font-size: 11px;
+    vertical-align: middle;
+    cursor: default;
+}
+
+.footer_container{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25px;
+    background: url(images/bottombar-bg.png);
+}
+
+#footer_logo{
+    padding-left: 10px;
+    vertical-align: middle;
+}
+
+.footer_label{
+    color: #DEDEDE;
+    padding: 1px 10px 0 3px;
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.footer_slidemenu_cell{
+}
+
+.footer-menu-btn-container{
+    background: url(images/bottombar-bg.png) repeat center left;
+}
+
+.footer-menu-btn{
+    white-space: nowrap;
+    padding: 4px 20px 4px 8px;
+    margin: 0;
+    height: 25px;
+    width: auto;
+    overflow: visible;
+    color: white;
+    font: bold 12px Arial,sans-serif;
+    outline: none;
+    border: 0;
+    background-image: url(images/dropdownTriangleWhite.gif);
+    background-repeat: no-repeat;
+    background-position:center right;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.footer-menu-btn:hover, .footer-menu-btn-active{
+    background-color: #666;
+}
+
+#footer_link_cell{
+    width: 100%;
+    padding-left: 20px;
+}
+
+.footer-menu{
+    position: absolute;
+    z-index: 20000;
+    margin: 0;
+    border-top: 1px solid #CCC;
+    border-right: 1px solid #676767;
+    border-bottom: 1px solid #676767;
+    border-left: 1px solid #CCC;
+    border-collapse: collapse;
+    padding: 0.5ex 0 0 0;
+    font: Arial,Verdana,Helvetica,sans-serif;
+    font-weight: normal;
+    color: #333;
+    background-color: white;
+    white-space: nowrap;
+    cursor: default;
+    outline: none;
+    
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 50%;
+}
+
+.footer-menu .footer-menu-item{
+    margin: 0;
+    border: 0;
+    padding: 4px 1.5em 4px 4px;
+    color: black;
+    background-color: white;
+    font: Arial,Verdana,Helvetica,sans-serif;
+    font-weight: normal;
+    font-size: 12px;
+    cursor: default;
+}
+
+.footer-menu .footer-menu-item-checked{
+    font-weight: bold;
+}
+
+.footer-menu .footer-menu-item:hover{
+    background-color: #E0EDFE;
+}
+
+
+/* placeHolder */
+div.centeredTitle{
+    position: absolute;
+    left: 9.0%;
+    top: 40.0%;
+    width: 82.0%;
+    height: 3.6em;
+    text-align: center;
+}
+
+div.subtitle{
+    position: absolute;
+    left: 18.0%;
+    top: 60.0%;
+    width: 64.0%;
+    height: 2.7em;
+    text-align: center;
+}
+
+div.title{
+    position: absolute;
+    left: 3.0%;
+    top: 4.0%;
+    width: 94.0%;
+    height: 2.7em;
+}
+
+div.body{
+    position: absolute;
+    left: 3.0%;
+    top: 24.0%;
+    width: 94.0%;
+    height: 16.2em;
+}
+
+div.col1{
+    position: absolute;
+    left: 3.0%;
+    top: 24.0%;
+    width: 44.0%;
+    height: 16.2em;
+}
+
+div.col2{
+    position: absolute;
+    left: 53.0%;
+    top: 24.0%;
+    width: 44.0%;
+    height: 16.2em;
+}
+
+div.caption{
+    position: absolute;
+    left: 3.0%;
+    top: 88.0%;
+    width: 94.0%;
+    height: 1.8em;
+    text-align: center;
+}
+
+div.unknown{
+    position: absolute;
+    left: 25.0%;
+    top: 25.0%;
+    width: 50.0%;
+    height: 5.625em;
+}
+
+.slide ul, .slide ol, .slide blockquote{
+    margin: 0 0 0 1.5em;
+    padding: 0;
+}
+
+.text li{
+    line-height: normal;
+}
