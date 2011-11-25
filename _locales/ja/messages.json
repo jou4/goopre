@@ -1,0 +1,41 @@
+{
+    "appName": {
+        "message": "GooPre"
+    },
+
+    "appDesc": {
+        "message": "Googleプレゼンテーションのスライドショーをローカルに保存します。保存したスライドショーはオフライン時でも利用できます。"
+    },
+
+    "document": {
+        "message": "ドキュメント"
+    },
+
+    "complete": {
+        "message": "完了"
+    },
+
+    "completeMsg": {
+        "message": "「__TITLE__」を保存しました。"
+    },
+
+    "saveBtnCaption": {
+        "message": "このスライドショーを保存"
+    },
+
+    "deleteBtnCaption": {
+        "message": "削除"
+    },
+
+    "noteText": {
+        "message": "Googleドキュメントのプレゼンテーションページで「このスライドショーを保存」をクリックすると、スライドショーのコピーがローカルに保存され、オフラインでも使用できるようになります。"
+    },
+
+    "slide": {
+        "message": "スライド"
+    },
+
+    "of": {
+        "message": "/"
+    }
+}

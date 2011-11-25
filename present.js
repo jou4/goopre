@@ -1,4 +1,7 @@
 $(function(){
+
+    $("#footer_logo_tail").text(chrome.i18n.getMessage("document"));
+
     var url = location.href;
     var id;
     if(url.match(/id=(.+)/)){
@@ -248,7 +251,8 @@ $(function(){
 
 
     function updateSlideIndexPopupTrigger(){
-        slideIndexPopupTrigger.prop("value", "スライド " + (currentSlideIndex + 1) + " / " + numOfSlides);
+        slideIndexPopupTrigger.prop("value",
+            chrome.i18n.getMessage("slide") + " " + (currentSlideIndex + 1) + " " + chrome.i18n.getMessage("of") + " " + numOfSlides);
     }
 
     function hideSlideIndexPopup(){

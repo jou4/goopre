@@ -1,0 +1,41 @@
+{
+    "appName": {
+        "message": "GooPre"
+    },
+
+    "appDesc": {
+        "message": "Save the presentation of Google Docs. It can be used at offline."
+    },
+
+    "document": {
+        "message": "Docs"
+    },
+
+    "complete": {
+        "message": "Complete"
+    },
+
+    "completeMsg": {
+        "message": "Saved '__TITLE__'."
+    },
+
+    "saveBtnCaption": {
+        "message": "Save this presentation"
+    },
+
+    "deleteBtnCaption": {
+        "message": "Del"
+    },
+
+    "noteText": {
+        "message": "Click 'Save this presentation' at the page of 'View presentation' on Google Docs. Then the presentation will be saved to local storage. That presentaion can be used at offline."
+    },
+
+    "slide": {
+        "message": "Slide"
+    },
+
+    "of": {
+        "message": "of"
+    }
+}

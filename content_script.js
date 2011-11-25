@@ -8,12 +8,12 @@ function parse(str){
     var nested_object = 0;
     var in_string = false;
     var str_begin = "";
-    
+
     var acc = [], item = "";
-    
+
     while(i < len){
         c = str[i++];
-        
+
         if( ! in_string && (c == "'" || c == '"')){
             str_begin = c;
             in_string = true;
@@ -33,14 +33,14 @@ function parse(str){
             item += '"'
             continue;
         }
-        
+
         if( ! in_string && c == "{"){
             nested_object++;
         }
         if( ! in_string && c == "}"){
             nested_object--;
         }
-        
+
         if(c == ","){
             if( ! in_string && nested_object == 0){
                 acc.push(item);
@@ -48,27 +48,27 @@ function parse(str){
                 continue;
             }
         }
-        
+
         if( ! in_string && c.match(/\s/)){
             continue;
         }
-        
+
         item += c;
     }
-    
+
     if(item.length > 0){
         acc.push(item);
     }
-    
+
     var result = [];
-    
+
     acc.forEach(function(e){
         if(e[0] == "{"){
             result.push(eval("(" + e + ")"));
         }
         else if(e == "roomOptions"){
             result.push({
-                title: "参加者",
+                title: "",
                 roster: "nameOnly",
                 hideIcon: "true"
             });
@@ -77,7 +77,7 @@ function parse(str){
             result.push(eval(e));
         }
     });
-    
+
     return result;
 }
 

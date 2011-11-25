@@ -70,8 +70,8 @@ function createStoreData(data, callback){
         addSlide(data);
 
         webkitNotifications.createNotification(
-            chrome.extension.getURL("icon.png"), "完了",
-            "「" + data.attributes.title + "」のコピーを作成しました。").show();
+            chrome.extension.getURL("icon.png"), chrome.i18n.getMessage("complete"),
+            chrome.i18n.getMessage("completeMsg").replace("__TITLE__", data.attributes.title)).show();
 
         callback && callback();
     });
@@ -120,7 +120,8 @@ function base64Enc(input){
 		} else if (isNaN(chr3)) {
 			enc4 = 64;
 		}
-		output = output + keyString.charAt(enc1) + keyString.charAt(enc2) + keyString.charAt(enc3) + keyString.charAt(enc4);
+        output = output + keyString.charAt(enc1) + keyString.charAt(enc2) +
+                 keyString.charAt(enc3) + keyString.charAt(enc4);
 	}
 	return output;
 }

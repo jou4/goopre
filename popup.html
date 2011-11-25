@@ -79,7 +79,7 @@
 <body>
 
 <div id="btnsBlock">
-    <input id="saveButton" type="button" value="このスライドショーをコピー" />
+    <input id="saveButton" type="button" value="Save this slideshow" />
 </div>
 
 <div id="listBlock">
@@ -89,11 +89,11 @@
 <div>
 
 <div id="noteBlock">
-<p>Googleドキュメントのプレゼンテーションページで「このスライドショーをコピー」をクリックすると、スライドショーのコピーがローカルに保存され、オフラインでも使用できるようになります。</p>
+<p id="note"></p>
 </div>
 
 <div id="footerBlock">
-<p><a id="toDocHome" href="https://docs.google.com" target="_blank">Googleドキュメント</a></p>
+<p><a id="toDocHome" href="https://docs.google.com" target="_blank"></a></p>
 </div>
 
 
@@ -102,37 +102,45 @@
 var bg = chrome.extension.getBackgroundPage();
 
 $(function(){
-    chrome.tabs.getSelected(null, function(tab){
-        if(tab.url.indexOf("https://docs.google.com/present/view?id=") < 0){
-            $("#saveButton").prop("disabled", true);
-        }
-        else{
-            $("#saveButton").prop("disabled", false);
-        }
-    });
 
-    $("#saveButton").click(function(){
+        $("#saveButton").attr("value", chrome.i18n.getMessage("saveBtnCaption"));
+        $("#note").text(chrome.i18n.getMessage("noteText"));
+        $("#toDocHome").text("Google" + chrome.i18n.getMessage("document"));
+
+
         chrome.tabs.getSelected(null, function(tab){
-            bg.saveSlide(tab, showList);
-        });
-    });
-
-    /*
-    $("#toDocHome").click(function(){
-        var url = $("#toDocHome").attr("href");
-        chrome.tabs.getAllInWindow(null,function(tabs){
-            for(var i=0,j=tabs.length;i<j;i++){
-                if(tabs[i].url.indexOf(url) >= 0){
-                    chrome.tabs.update(tabs[i].id, { selected:true });
-                    return;
+                if(tab.url.indexOf("https://docs.google.com/present/view?id=") < 0){
+                    $("#saveButton").prop("disabled", true);
                 }
-            }
-            chrome.tabs.create({ url: url });
+                else{
+                    $("#saveButton").prop("disabled", false);
+                }
         });
-    });
-    */
 
-    showList();
+        $("#saveButton").click(function(){
+                chrome.tabs.getSelected(null, function(tab){
+                        bg.saveSlide(tab, showList);
+                });
+        });
+
+        /*
+        $("#toDocHome").click(function(){
+                var url = $("#toDocHome").attr("href");
+                chrome.tabs.getAllInWindow(null,function(tabs){
+                        for(var i=0,j=tabs.length;i<j;i++){
+                            if(tabs[i].url.indexOf(url) >= 0){
+                                chrome.tabs.update(tabs[i].id, { selected: true });
+                                return;
+                            }
+                        }
+                        chrome.tabs.create({ url: url });
+                });
+                return false;
+        });
+        */
+
+
+        showList();
 });
 
 function dateYMD(date, sep){
@@ -194,11 +202,11 @@ function showList(){
 
             $("<td class='date'></td>").text(dateYMD(data.date, "/")).appendTo(row);
 
-            var removeBtn = $("<a href='javascript:void(0);'>削除</a>");
+            var removeBtn = $("<a href='javascript:void(0);'></a>")
+                .text(chrome.i18n.getMessage("deleteBtnCaption"));
             removeBtn.click(function(){
                 removeSlide(data.id);
-                row.remove();
-                row = null;
+                showList();
             });
 
             $("<td class='btn'></td>").append(removeBtn).appendTo(row);
