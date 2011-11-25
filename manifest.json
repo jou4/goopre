@@ -16,7 +16,7 @@
         "https://blob-s-docs.googlegroups.com/*"
     ],
     "icons": {
-        "16" : "icon.png",
+        "16" : "icon_16.png",
         "48" : "icon.png",
         "128": "icon.png"
     }
