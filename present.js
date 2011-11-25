@@ -26,6 +26,12 @@ $(function(){
         presentAttrs = data.attributes;
         document.title = presentAttrs.title;
 
+        for(var key in presentAttrs){
+            if(key.indexOf("fontSize") >= 0){
+                presentAttrs["fontSize"] = presentAttrs[key];
+            }
+        }
+
         createSlides(data);
 
         $("#ToolbarPrev").click(gotoPrevSlide);
@@ -80,9 +86,22 @@ $(function(){
                 }
                 else{
                     placeHolder.addClass("unknown");
-                    placeHolder.css({
-                        "font-size": "1.8em"
-                    });
+
+                    if(presentAttrs["fontSize"]){
+                        var manipulateFontSize = true;
+
+                        // コンテンツ内部で1.0emより大きいフォントサイズが指定されている場合は
+                        // placeHolder側でのフォントサイズの補整は不要
+                        if(attrs.contents.match(/font\-size:(.+)em/)){
+                            manipulateFontSize = parseFloat(RegExp.$1) < 1.0;
+                        }
+
+                        if(manipulateFontSize){
+                            placeHolder.css({
+                                "font-size": presentAttrs["fontSize"]
+                            });
+                        }
+                    }
                 }
 
                 var inner = $('<div class="inner-text"></div>')
@@ -185,6 +204,15 @@ $(function(){
     }
 
     // popup menu
+    function roundText(str, max, cont){
+        if(str.length <= max){
+            return str;
+        }
+
+        cont = cont || "..";
+        return str.substr(0, max - 1) + cont;
+    }
+
     function createSlideIndexPopup(){
         $("#slideFg .slide").each(function(i, slide){
             slide = $(slide);
@@ -200,15 +228,21 @@ $(function(){
 
             items = slide.find(".centeredTitle");
             if(items.length > 0){
-                caption = (i+1) + ": " + $(items[0]).text();
+                caption = $(items[0]).text();
             }
 
             if( ! caption){
                 items = slide.find(".title");
-                caption = (i+1) + ": " + $(items[0]).text();
+                if(items.length > 0){
+                    caption = $(items[0]).text();
+                }
             }
 
-            menuItem.text(caption);
+            if( ! caption){
+                caption = roundText(slide.text(), 15);
+            }
+
+            menuItem.text((i+1) + ": " + caption);
         });
     }
 
@@ -229,24 +263,34 @@ $(function(){
 
     function showSlideIndexPopup(){
         if(slideIndexPopupVisible){ return; }
-        slideIndexPopup.find(".footer-menu-item").each(function(i, item){
-            if(i === currentSlideIndex){
-                $(item).addClass("footer-menu-item-checked");
-            }
-            else{
-                $(item).removeClass("footer-menu-item-checked");
-            }
-        });
 
         var offset = slideIndexPopupTrigger.offset();
 
         slideIndexPopup.css({
             left: offset.left,
-            top: offset.top - slideIndexPopup.outerHeight(),
+            bottom: $(document).height() - offset.top,
             display: "block"
         });
 
         slideIndexPopupTrigger.addClass("footer-menu-btn-active");
+
+        var scrollAmount = 0;
+        var targetItemHeight = 0;
+        slideIndexPopup.find(".footer-menu-item").each(function(i, item){
+            if(i === currentSlideIndex){
+                $(item).addClass("footer-menu-item-checked");
+                targetItemHeight = $(item).outerHeight();
+            }
+            else{
+                $(item).removeClass("footer-menu-item-checked");
+            }
+
+            if(i < currentSlideIndex){
+                scrollAmount += $(item).outerHeight();
+            }
+        });
+
+        slideIndexPopup.scrollTop(scrollAmount - (slideIndexPopup.innerHeight() - targetItemHeight) / 2);
 
         setTimeout(function(){
             $(document).bind("mousedown.menu-popup", function(e){
@@ -304,8 +348,6 @@ $(function(){
         }
         resizeLock = setTimeout(resize, 100);
     });
-
-    $(window).resize(hideSlideIndexPopup);
 
     $(document).keydown(function(e){
         switch(e.keyCode){

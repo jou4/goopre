@@ -277,7 +277,7 @@ html{
     white-space: nowrap;
     cursor: default;
     outline: none;
-    
+
     overflow-x: hidden;
     overflow-y: auto;
     max-height: 50%;
@@ -297,6 +297,7 @@ html{
 
 .footer-menu .footer-menu-item-checked{
     font-weight: bold;
+    background-color: #FFC;
 }
 
 .footer-menu .footer-menu-item:hover{
