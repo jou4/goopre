@@ -354,11 +354,13 @@ $(function(){
     });
 
     $(document).keydown(function(e){
+            console.log(e.keyCode);
         switch(e.keyCode){
             case 37:
             case 38:
                 gotoPrevSlide();
                 break;
+            case 13:
             case 39:
             case 40:
                 gotoNextSlide();
